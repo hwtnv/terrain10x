@@ -31,7 +31,8 @@
 </head>
 
 <body>
-  <input type="range" name="exaggeration" id="changeExaggeration" value="10" min="-10" max="10" step="1" oninput="changeExaggeration()">
+  <input type="range" name="exaggeration" id="changeExaggeration" value="10" min="-10" max="10" step="1" oninput="textChange()">
+  <div id="button" onclick="changeExaggeration()">SET</div>
   <div id="magnification">x10</div>
   <div id="cesiumContainer"></div>
   <script>
@@ -77,11 +78,14 @@
     var slider = document.getElementById("changeExaggeration");
     var magnification = document.getElementById("magnification");
 
-    function changeExaggeration() {
+    function textChange(){
       magnification.innerHTML = "x" + slider.value;
+    }
+
+    function changeExaggeration() {
       var reset = function () {
         viewer.terrainProvider = ellipsoidProvider;
-        setTimeout(adjust,500);
+        setTimeout(adjust,200);
       }
       var adjust = function () {
         viewer.terrainProvider = cesiumTerrainProviderMeshes;

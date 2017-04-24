@@ -31,8 +31,11 @@
 </head>
 
 <body>
+  <input type="range" name="exaggeration" id="changeExaggeration" value="10" min="-10" max="10" step="1" oninput="changeExaggeration()">
+  <div id="magnification">x10</div>
   <div id="cesiumContainer"></div>
   <script>
+
     //視点配列作成
 
     function viewPoints(_label, _lat, _lng, _heading, _pitch, _range) {
@@ -59,6 +62,7 @@
       //地形強調のパラメータ
       terrainExaggeration: 10.0
     });
+    var ellipsoidProvider = new Cesium.EllipsoidTerrainProvider();
     var cesiumTerrainProviderMeshes = new Cesium.CesiumTerrainProvider({
       url: '//assets.agi.com/stk-terrain/world',
       requestWaterMask: true,
@@ -68,7 +72,26 @@
 
     changeViewPoint(0, 3);
 
+    //地形強調度変更
+
+    var slider = document.getElementById("changeExaggeration");
+    var magnification = document.getElementById("magnification");
+
+    function changeExaggeration() {
+      magnification.innerHTML = "x" + slider.value;
+      var reset = function () {
+        viewer.terrainProvider = ellipsoidProvider;
+        setTimeout(adjust,500);
+      }
+      var adjust = function () {
+        viewer.terrainProvider = cesiumTerrainProviderMeshes;
+        viewer.scene._terrainExaggeration = slider.value;
+      }
+      reset();
+    }
+
     //視点変更
+
     function changeViewPoint(num, delay) {
       var newLat = viewPointsArray[num].lat;
       var newLng = viewPointsArray[num].lng;

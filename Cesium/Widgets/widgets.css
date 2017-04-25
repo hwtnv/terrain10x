@@ -15,6 +15,19 @@
 @import url(./Timeline/Timeline.css);
 @import url(./Viewer/Viewer.css);
 
+
+#baseLayerPickerContainer{
+  position:absolute;
+  top:5px;
+  right:5px;
+  width:38px;
+  height:38px;
+}
+
+.cesium-baseLayerPicker-dropDown {
+  width:"";
+}
+
 .cesium-viewer-bottom {
     display:none;
 }

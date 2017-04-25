@@ -24,12 +24,19 @@
   height:38px;
 }
 
-.cesium-baseLayerPicker-dropDown {
-  width:"";
-}
-
 .cesium-viewer-bottom {
     display:none;
+}
+
+#creditContainerDiv {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    padding-right: 100px;
+}
+
+.cesium-credit-imageContainer {
+  display:none;
 }
 
 #magnification {

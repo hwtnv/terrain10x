@@ -95,18 +95,6 @@
         });
       }
     }));
-    //Open Street Map
-    imageryViewModels.push(new Cesium.ProviderViewModel({
-      name: 'Open\u00adStreet\u00adMap',
-      iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/openStreetMap.png'),
-      tooltip: 'OpenStreetMap (OSM) is a collaborative project to create a free editable \
-map of the world.\nhttp://www.openstreetmap.org',
-      creationFunction: function () {
-        return Cesium.createOpenStreetMapImageryProvider({
-          url: 'https://a.tile.openstreetmap.org/'
-        });
-      }
-    }));
     //Black Marble
     imageryViewModels.push(new Cesium.ProviderViewModel({
       name: 'Black Marble',
@@ -118,6 +106,18 @@ in this global view of the Earth at night as seen by NASA/NOAA\'s Suomi NPP sate
           url: 'https://cesiumjs.org/blackmarble',
           credit: 'Black Marble imagery courtesy NASA Earth Observatory',
           flipXY: true
+        });
+      }
+    }));
+    //Open Street Map
+    imageryViewModels.push(new Cesium.ProviderViewModel({
+      name: 'Open\u00adStreet\u00adMap',
+      iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/openStreetMap.png'),
+      tooltip: 'OpenStreetMap (OSM) is a collaborative project to create a free editable \
+map of the world.\nhttp://www.openstreetmap.org',
+      creationFunction: function () {
+        return Cesium.createOpenStreetMapImageryProvider({
+          url: 'https://a.tile.openstreetmap.org/'
         });
       }
     }));

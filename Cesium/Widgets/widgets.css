@@ -15,10 +15,6 @@
 @import url(./Timeline/Timeline.css);
 @import url(./Viewer/Viewer.css);
 
-body {
-  background-color:black;
-}
-
 .cesium-viewer-toolbar{
   z-index:10001;
 }

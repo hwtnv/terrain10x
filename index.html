@@ -31,7 +31,7 @@
   </style>
 </head>
 
-<body>
+<body onload="resizeWindow()">
   <input type="range" name="exaggeration" id="changeExaggeration" value="10" min="-10" max="10" step="1" oninput="textChange()">
   <div id="button" onclick="changeExaggeration()">SET</div>
   <div id="magnification">x10</div>
@@ -41,39 +41,28 @@
   <script>
     //画面サイズ調整
 
-    var mobile = 0;
-
-    var getDevice = (function () {
-      var ua = navigator.userAgent;
-      if (ua.indexOf('iPhone') > 0 || ua.indexOf('iPod') > 0 || ua.indexOf('Android') > 0 && ua.indexOf('Mobile') > 0) {
-        mobile = 1;
-      } else if (ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0) {
-        mobile = 2;
-      } else {
-        mobile = 0;
-      }
-    })();
-
-    if (mobile != 1) {
-      setTimeout('resizeWindow()', 0);
-    } else {
-      setTimeout('resizeWindow()', 1000);
-    }
-
     function resizeWindow() {
-      var screenWidth = window.innerWidth;
-      var screenHeight = window.innerHeight;
-      $(function () {
-        document.body.style.height = screenHeight;
-        $('#cesiumContainer').height(screenHeight);
-      });
-      setTimeout('loadCesium()', 100);
+      setTimeout(function () {
+        var screenWidth = window.innerWidth;
+        var screenHeight = window.innerHeight;
+        $(function () {
+          document.body.style.height = screenHeight;
+          $('#cesiumContainer').height(screenHeight);
+        });
+      }, 100);
     }
+
+    var timer = false;
+    $(window).resize(function () {
+      if (timer !== false) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(function () {
+        resizeWindow();
+      }, 200);
+    });
 
     //視点配列作成
-
-    var viewPointsArray = [];
-    viewPointsArray[0] = new viewPoints("東京", 35.3606, 138.7278, 0, -45, 160000);
 
     function viewPoints(_label, _lat, _lng, _heading, _pitch, _range) {
       this.label = _label;
@@ -84,95 +73,87 @@
       this.range = _range;
     }
 
-    //Cesiumをロード
+    var viewPointsArray = [];
+    viewPointsArray[0] = new viewPoints("東京", 35.3606, 138.7278, 0, -45, 160000);
 
-    var viewer;
-    var ellipsoidProvider;
-    var cesiumTerrainProviderMeshes;
+    var viewer = new Cesium.Viewer('cesiumContainer', {
+      //起動時はImageryProviderナシ
+      imageryProvider: false,
+      timeline: false,
+      animation: false,
+      homeButton: false,
+      sceneModePicker: false,
+      baseLayerPicker: false,
+      creditContainer: creditContainerDiv,
+      //地形強調のデフォルト値
+      terrainExaggeration: 10.0
+    });
+    //デフォルトベースマップを黒に
+    viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString('#000000');
+    var ellipsoidProvider = new Cesium.EllipsoidTerrainProvider();
+    var cesiumTerrainProviderMeshes = new Cesium.CesiumTerrainProvider({
+      url: '//assets.agi.com/stk-terrain/world',
+      requestWaterMask: true,
+      requestVertexNormals: true
+    });
+    viewer.terrainProvider = cesiumTerrainProviderMeshes;
 
-    function loadCesium() {
-      viewer = new Cesium.Viewer('cesiumContainer', {
-        //起動時はImageryProviderナシ
-        imageryProvider: false,
-        timeline: false,
-        animation: false,
-        homeButton: false,
-        sceneModePicker: false,
-        baseLayerPicker: false,
-        creditContainer: creditContainerDiv,
-        //地形強調のデフォルト値
-        terrainExaggeration: 10.0
-      });
-      ellipsoidProvider = new Cesium.EllipsoidTerrainProvider();
-      cesiumTerrainProviderMeshes = new Cesium.CesiumTerrainProvider({
-        url: '//assets.agi.com/stk-terrain/world',
-        requestWaterMask: true,
-        requestVertexNormals: true
-      });
-      initialize();
-    }
+    //初期視点に移動
 
-    //初期状態・視点の設定
+    changeViewPoint(0, 3);
 
-    function initialize() {
-      viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString('#000000');
-      viewer.terrainProvider = cesiumTerrainProviderMeshes;
-      changeViewPoint(0, 3);
-      baseLayerPickerSetUp();
-    }
+    /* ここからbaseLayerPicker追加 */
 
-    //ベースレイヤーピッカー作成
+    //baseLayer配列を用意
+    var imageryViewModels = [];
 
-    function baseLayerPickerSetUp() {
-      //baseLayer配列を用意
-      var imageryViewModels = [];
-
-      //ESRI World Imagery
-      imageryViewModels.push(new Cesium.ProviderViewModel({
-        name: 'ESRI\u00adWorld\u00adImagery',
-        iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/esriWorldImagery.png'),
-        tooltip: 'World Imagery provides one meter or better satellite and aerial imagery in many parts of the world and lower resolution satellite imagery worldwide.  The map includes NASA Blue Marble: Next Generation 500m resolution imagery at small scales (above 1:1,000,000), i-cubed 15m eSAT imagery at medium-to-large scales (down to 1:70,000) for the world, and USGS 15m Landsat imagery for Antarctica. The map features 0.3m resolution imagery in the continental United States and 0.6m resolution imagery in parts of Western Europe from DigitalGlobe. In other parts of the world, 1 meter resolution imagery is available from GeoEye IKONOS, i-cubed Nationwide Prime, Getmapping, AeroGRID, IGN Spain, and IGP Portugal.  Additionally, imagery at different resolutions has been contributed by the GIS User Community.\http://www.esri.com',
-        creationFunction: function () {
-          return new Cesium.ArcGisMapServerImageryProvider({
-            url: '//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
-            enablePickFeatures: false
-          });
-        }
-      }));
-      //Black Marble
-      imageryViewModels.push(new Cesium.ProviderViewModel({
-        name: 'Black Marble',
-        iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/blackMarble.png'),
-        tooltip: 'The lights of cities and villages trace the outlines of civilization \
+    //ESRI World Imagery
+    imageryViewModels.push(new Cesium.ProviderViewModel({
+      name: 'ESRI\u00adWorld\u00adImagery',
+      iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/esriWorldImagery.png'),
+      tooltip: 'World Imagery provides one meter or better satellite and aerial imagery in many parts of the world and lower resolution satellite imagery worldwide.  The map includes NASA Blue Marble: Next Generation 500m resolution imagery at small scales (above 1:1,000,000), i-cubed 15m eSAT imagery at medium-to-large scales (down to 1:70,000) for the world, and USGS 15m Landsat imagery for Antarctica. The map features 0.3m resolution imagery in the continental United States and 0.6m resolution imagery in parts of Western Europe from DigitalGlobe. In other parts of the world, 1 meter resolution imagery is available from GeoEye IKONOS, i-cubed Nationwide Prime, Getmapping, AeroGRID, IGN Spain, and IGP Portugal.  Additionally, imagery at different resolutions has been contributed by the GIS User Community.\http://www.esri.com',
+      creationFunction: function () {
+        return new Cesium.ArcGisMapServerImageryProvider({
+          url: '//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
+          enablePickFeatures: false
+        });
+      }
+    }));
+    //Black Marble
+    imageryViewModels.push(new Cesium.ProviderViewModel({
+      name: 'Black Marble',
+      iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/blackMarble.png'),
+      tooltip: 'The lights of cities and villages trace the outlines of civilization \
 in this global view of the Earth at night as seen by NASA/NOAA\'s Suomi NPP satellite.',
-        creationFunction: function () {
-          return Cesium.createTileMapServiceImageryProvider({
-            url: 'https://cesiumjs.org/blackmarble',
-            credit: 'Black Marble imagery courtesy NASA Earth Observatory',
-            flipXY: true
-          });
-        }
-      }));
-      //Open Street Map
-      imageryViewModels.push(new Cesium.ProviderViewModel({
-        name: 'Open\u00adStreet\u00adMap',
-        iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/openStreetMap.png'),
-        tooltip: 'OpenStreetMap (OSM) is a collaborative project to create a free editable \
+      creationFunction: function () {
+        return Cesium.createTileMapServiceImageryProvider({
+          url: 'https://cesiumjs.org/blackmarble',
+          credit: 'Black Marble imagery courtesy NASA Earth Observatory',
+          flipXY: true
+        });
+      }
+    }));
+    //Open Street Map
+    imageryViewModels.push(new Cesium.ProviderViewModel({
+      name: 'Open\u00adStreet\u00adMap',
+      iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/openStreetMap.png'),
+      tooltip: 'OpenStreetMap (OSM) is a collaborative project to create a free editable \
 map of the world.\nhttp://www.openstreetmap.org',
-        creationFunction: function () {
-          return Cesium.createOpenStreetMapImageryProvider({
-            url: 'https://a.tile.openstreetmap.org/'
-          });
-        }
-      }));
-      //baseLayerPickerボタンを追加
-      var layers = viewer.imageryLayers;
-      var baseLayerPicker = new Cesium.BaseLayerPicker('baseLayerPickerContainer', {
-        globe: viewer.scene.globe,
-        imageryProviderViewModels: imageryViewModels
-      });
-    }
-    
+      creationFunction: function () {
+        return Cesium.createOpenStreetMapImageryProvider({
+          url: 'https://a.tile.openstreetmap.org/'
+        });
+      }
+    }));
+    //baseLayerPickerボタンを追加
+    var layers = viewer.imageryLayers;
+    var baseLayerPicker = new Cesium.BaseLayerPicker('baseLayerPickerContainer', {
+      globe: viewer.scene.globe,
+      imageryProviderViewModels: imageryViewModels
+    });
+
+    /* baseLayerPickerここまで */
+
     //地形強調度変更
 
     var slider = document.getElementById("changeExaggeration");
@@ -214,7 +195,6 @@ map of the world.\nhttp://www.openstreetmap.org',
         easingFunction: Cesium.EasingFunction.CUBIC_IN_OUT
       });
     }
-
   </script>
 </body>
 

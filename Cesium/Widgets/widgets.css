@@ -15,6 +15,9 @@
 @import url(./Timeline/Timeline.css);
 @import url(./Viewer/Viewer.css);
 
+.cesium-viewer-toolbar{
+  z-index:10001;
+}
 
 #baseLayerPickerContainer{
   position:absolute;
@@ -22,6 +25,7 @@
   right:5px;
   width:38px;
   height:38px;
+  z-index:10002;
 }
 
 .cesium-viewer-bottom {

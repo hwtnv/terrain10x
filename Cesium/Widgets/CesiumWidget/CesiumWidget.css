@@ -11,8 +11,8 @@
 .cesium-widget-credits {
     display: block;
     color: #fff;
-    font-size: 8px;
-    opacity:0.5;
+    font-size: 6px;
+    opacity:0.75;
 }
 
 .cesium-widget-credits a,

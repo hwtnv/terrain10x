@@ -15,6 +15,7 @@
   <meta name="twitter:description" content="Cesiumを使った地形強調のサンプルプログラム" />
   <meta name="twitter:image" content="https://hwtnv.github.io/terrain10x/screen.jpg" />
   <title>Cesium地形強調サンプル｜An interactive terrain exaggeration example</title>
+  <script src="js/jquery-2.1.3.min.js"></script>
   <script src="Cesium/Cesium.js"></script>
   <style>
     @import url(Cesium/Widgets/widgets.css);
@@ -30,7 +31,7 @@
   </style>
 </head>
 
-<body>
+<body onload="resizeWindow()">
   <input type="range" name="exaggeration" id="changeExaggeration" value="10" min="-10" max="10" step="1" oninput="textChange()">
   <div id="button" onclick="changeExaggeration()">SET</div>
   <div id="magnification">x10</div>
@@ -38,6 +39,29 @@
   <div id="baseLayerPickerContainer"></div>
   <div id="creditContainerDiv"></div>
   <script>
+    //画面サイズ調整
+
+    function resizeWindow() {
+      setTimeout(function () {
+        var screenWidth = window.innerWidth;
+        var screenHeight = window.innerHeight;
+        $(function () {
+          document.body.style.height = screenHeight;
+          $('#cesiumContainer').height(screenHeight);
+        });
+      }, 100);
+    }
+
+    var timer = false;
+    $(window).resize(function () {
+      if (timer !== false) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(function () {
+        resizeWindow();
+      }, 200);
+    });
+
     //視点配列作成
 
     function viewPoints(_label, _lat, _lng, _heading, _pitch, _range) {

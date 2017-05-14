@@ -76,6 +76,7 @@
     <img class="loading" src="img/loading.gif">
   </div>
   <script>
+    //userAgent取得
     var _ua = (function (u) {
       return {
         Facebook: (u.indexOf("fban/fbios;fbav") != -1)
@@ -84,6 +85,7 @@
 
     setTimeout('resizeWindow()', 1000);
 
+    //画面リサイズ
     function resizeWindow() {
       if (_ua.facebook == true) {
         var screenHeight = window.innerHeight - 100;
@@ -95,11 +97,18 @@
         document.body.style.height = screenHeight;
         $('#cesiumContainer').height(screenHeight);
         $('#blackOut').height(screenHeight);
-        $('#slideBar').css('top',screenHeight);
+        $('#slideBar').css('top', screenHeight);
         $('#blackOut').fadeOut(1000);
       });
       setTimeout('loadCesium()', 100);
     }
+
+    //スクロールしても最上部に戻す
+    $(window).scroll(function () {
+      $('body,html').scrollTop(0);
+    });
+
+
     //視点配列作成
 
     function viewPoints(_label, _lat, _lng, _heading, _pitch, _range) {

@@ -19,7 +19,6 @@
   <script src="js/jquery-2.1.3.min.js"></script>
   <style>
     @import url(Cesium/Widgets/widgets.css);
-    html,
     body,
     #cesiumContainer {
       width: 100%;
@@ -27,7 +26,7 @@
       margin: 0;
       padding: 0;
       background: black;
-      overflow: hidden;
+      overflow:hidden;
     }
 
     #blackOut {
@@ -63,26 +62,23 @@
     <img class="loading" src="img/loading.gif">
   </div>
   <script>
-    var _ua = (function (u) {
-      return {
-        Facebook: (u.indexOf("fban/fbios;fbav") != -1);
-      }
-    })(window.navigator.userAgent.toLowerCase());
 
-    console.log(_ua.Facebook);
+var _ua = (function(u){
+return {
+Facebook:(u.indexOf("fban/fbios;fbav") != -1)
+}
+})(window.navigator.userAgent.toLowerCase());
+
+console.log(_ua.Facebook);
 
     function resizeWindow(param) {
-      $(window).on('touchmove.noScroll', function (e) {
-        e.preventDefault();
-      });
-      if (_ua.Facebook == true) {
+      if (_ua.Facebook == true){
         var screenHeight = window.innerHeight - 100;
-      } else {
-        var screenHeight = window.innerHeight;
+        } else {
+      var screenHeight = window.innerHeight;
       }
       $(function () {
         console.log("resized");
-        document.body.style.height = screenHeight;
         document.body.style.height = screenHeight;
         $('#cesiumContainer').height(screenHeight);
         $('#blackOut').height(screenHeight);

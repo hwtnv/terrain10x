@@ -27,12 +27,18 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-      position: fixed;
       background-color: black;
+      position: fixed;
     }
 
     #slideBar {
-      bottom: 0px;
+      position: absolute;
+      z-index: 20000;
+      top: 100%;
+      height: 70px;
+      margin-top: -70px;
+      width: 100%;
+      left: 50%;
     }
 
     #blackOut {
@@ -58,12 +64,12 @@
 </head>
 
 <body>
-  <input type="range" name="exaggeration" id="changeExaggeration" value="10" min="-10" max="10" step="1" oninput="textChange()">
   <div id="slideBar">
     <div id="button" onclick="changeExaggeration()">SET</div>
+    <input type="range" name="exaggeration" id="changeExaggeration" value="10" min="-10" max="10" step="1" oninput="textChange()">
     <div id="magnification">x10</div>
-    <div id="cesiumContainer"></div>
   </div>
+  <div id="cesiumContainer"></div>
   <div id="baseLayerPickerContainer"></div>
   <div id="creditContainerDiv"></div>
   <div id="blackOut">
@@ -84,13 +90,15 @@
       } else {
         var screenHeight = window.innerHeight;
       }
-    $(function () {
-      document.body.style.height = screenHeight;
-      $('#cesiumContainer').height(screenHeight);
-      $('#blackOut').height(screenHeight);
-      $('#blackOut').fadeOut(1000);
-    });
-    setTimeout('loadCesium()', 100);
+      console.log(screenHeight);
+      $(function () {
+        document.body.style.height = screenHeight;
+        $('#cesiumContainer').height(screenHeight);
+        $('#blackOut').height(screenHeight);
+        $('#slideBar').css('top',screenHeight);
+        $('#blackOut').fadeOut(1000);
+      });
+      setTimeout('loadCesium()', 100);
     }
     //視点配列作成
 

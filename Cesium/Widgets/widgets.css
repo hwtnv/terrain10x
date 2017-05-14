@@ -47,10 +47,9 @@
     font-family: Arial;
     width:100px;
     margin-left:-50px;
+    margin-top:-10px;
     text-align:center;
-    position:fixed;
     font-size:18px;
-    bottom:2px;
     left:50%;
     z-index:10000;
     color: rgb(255, 255, 255);
@@ -59,23 +58,22 @@
 
 #changeExaggeration {
     opacity:0.8;
-    position: fixed;
     bottom: 12px;
     left: 8px;
     z-index: 10001;
     width: 50%;
     left: 50%;
     margin-left: -25%;
+    z-index:30000;
 }
 
 #button {
     opacity:0.9;
     text-align:center;
-    position:fixed;
-    bottom:40px;
     left:50%;
     width:60px;
     margin-left:-40px;
+    margin-bottom:-8px;
     z-index:10001;
     -webkit-border-radius: 20;
     -moz-border-radius: 20;

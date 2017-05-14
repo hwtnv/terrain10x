@@ -63,7 +63,7 @@
   <script>
     function resizeWindow() {
       var screenWidth = window.innerWidth;
-      var screenHeight = window.innerHeight;
+      var screenHeight = screen.availHeight;
       $(function () {
         document.body.style.height = screenHeight;
         $('#cesiumContainer').height(screenHeight);

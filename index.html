@@ -28,10 +28,11 @@
       padding: 0;
       background: black;
     }
+
     #blackOut {
       position: absolute;
-      top:0px;
-      left:0px;
+      top: 0px;
+      left: 0px;
       margin: 0px;
       padding: 0px;
       width: 100%;
@@ -39,6 +40,7 @@
       background: black;
       z-index: 10001;
     }
+
     .loading {
       position: absolute;
       top: 50%;
@@ -49,7 +51,7 @@
   </style>
 </head>
 
-<body onLoad="setTimeout('resizeWindow()', 1000)">
+<body onLoad="setTimeout('resizeWindow(1)', 1000)">
   <input type="range" name="exaggeration" id="changeExaggeration" value="10" min="-10" max="10" step="1" oninput="textChange()">
   <div id="button" onclick="changeExaggeration()">SET</div>
   <div id="magnification">x10</div>
@@ -60,16 +62,33 @@
     <img class="loading" src="img/loading.gif">
   </div>
   <script>
-    function resizeWindow() {
+    function resizeWindow(param) {
       var screenHeight = window.innerHeight;
       $(function () {
+        console.log("resized");
         document.body.style.height = screenHeight;
         $('#cesiumContainer').height(screenHeight);
         $('#blackOut').height(screenHeight);
+        $('#magnification').css('bottom', '2px');
+        $('#changeExaggeration').css('bottom', '12px')
+        $('#button').css('bottom', '40px')
         $('#blackOut').fadeOut(1000);
       });
-      setTimeout('loadCesium()', 100);
+      if (param == 1) {
+        setTimeout('loadCesium()', 100);
+      }
     }
+
+    var timer = false;
+    $(window).resize(function () {
+      if (timer !== false) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(function () {
+        console.log('resized');
+        resizeWindow(0);
+      }, 200);
+    });
 
     //視点配列作成
 

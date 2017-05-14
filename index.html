@@ -62,8 +62,21 @@
     <img class="loading" src="img/loading.gif">
   </div>
   <script>
+
+var _ua = (function(u){
+return {
+Facebook:(u.indexOf("fban/fbios;fbav") != -1)
+}
+})(window.navigator.userAgent.toLowerCase());
+
+console.log(_ua.Facebook);
+
     function resizeWindow(param) {
+      if (_ua.Facebook == true){
+        var screenHeight = window.innerHeight - 100;
+        } else {
       var screenHeight = window.innerHeight;
+      }
       $(function () {
         console.log("resized");
         document.body.style.height = screenHeight;

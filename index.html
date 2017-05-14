@@ -49,7 +49,7 @@
   </style>
 </head>
 
-<body onLoad="resizeWindow()">
+<body onLoad="setTimeout('resizeWindow()', 1000)">
   <input type="range" name="exaggeration" id="changeExaggeration" value="10" min="-10" max="10" step="1" oninput="textChange()">
   <div id="button" onclick="changeExaggeration()">SET</div>
   <div id="magnification">x10</div>
@@ -66,9 +66,9 @@
         document.body.style.height = screenHeight;
         $('#cesiumContainer').height(screenHeight);
         $('#blackOut').height(screenHeight);
-        $('#blackOut').fadeOut(2000);
+        $('#blackOut').fadeOut(1000);
       });
-      setTimeout('loadCesium()', 1000);
+      setTimeout('loadCesium()', 100);
     }
 
     //視点配列作成

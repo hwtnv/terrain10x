@@ -27,6 +27,7 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
+      background:black;
     }
   </style>
 </head>
@@ -45,9 +46,8 @@
       $(function () {
         document.body.style.height = screenHeight;
         $('#cesiumContainer').height(screenHeight);
-        $('#blackOut').height(screenHeight);
       });
-      setTimeout('loadCesium()', 100);
+      setTimeout('loadCesium()', 500);
     }
 
     //視点配列作成

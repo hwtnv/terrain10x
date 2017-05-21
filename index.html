@@ -17,6 +17,8 @@
   <title>Cesium地形強調サンプル｜An interactive terrain exaggeration example</title>
   <script src="Cesium/Cesium.js"></script>
   <script src="js/jquery-2.1.3.min.js"></script>
+  <script src="http://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyCc9E-ulJKRVMPyJe_V5sUVNU8kxiDIUtg"></script>
   <style>
     @import url(Cesium/Widgets/widgets.css);
     html,
@@ -60,10 +62,38 @@
       margin-top: -40px;
       margin-left: -40px;
     }
+
+    input#inputtext {
+      margin: 2px 0px 0px 0px;
+      padding: 3px;
+      width: 100px !important;
+    }
+
+    .geocode {
+      opacity: 0.8;
+      position: absolute;
+      top: 11px;
+      right: 52px;
+      z-index: 10001;
+    }
+
+    .textbox {
+      border: 0;
+      margin: 0px;
+      padding: 0px 0px 1px 2px;
+      font-size: 12px;
+      width: 100px;
+      height: 15px;
+    }
   </style>
 </head>
 
 <body>
+  <div class="geocode">
+    <form action="javascript:geocode()" class="textbox" />
+    <input id="inputtext" class="textbox" type="text" value="" placeholder="地名で検索" />
+    </form>
+  </div>
   <div id="slideBar">
     <div id="button" onclick="changeExaggeration()">SET</div>
     <input type="range" name="exaggeration" id="changeExaggeration" value="10" min="-10" max="10" step="1" oninput="textChange()">
@@ -137,6 +167,7 @@
         homeButton: false,
         sceneModePicker: false,
         baseLayerPicker: false,
+        geocoder: false,
         creditContainer: creditContainerDiv,
         //地形強調のデフォルト値
         terrainExaggeration: 10.0
@@ -228,6 +259,36 @@ map of the world.\nhttp://www.openstreetmap.org',
         viewer.scene._terrainExaggeration = slider.value;
       }
       reset();
+    }
+
+    //ジオコード
+
+    function geocode() {
+      var geocoder = new google.maps.Geocoder();
+      var input = document.getElementById('inputtext').value;
+      geocoder.geocode(
+        { address: input },
+
+        function (results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            var viewportObj = results[0].geometry.viewport;
+            var southNorth = viewportObj[Object.keys(viewportObj)[0]];
+            var westEast = viewportObj[Object.keys(viewportObj)[1]];
+
+            var south = southNorth[Object.keys(southNorth)[0]];
+            var north = southNorth[Object.keys(southNorth)[1]];
+            var west = westEast[Object.keys(westEast)[0]];
+            var east = westEast[Object.keys(westEast)[1]];
+            var rectangle = Cesium.Rectangle.fromDegrees(west, south, east, north);
+            viewer.camera.flyTo({
+              destination: rectangle,
+              easingFunction: Cesium.EasingFunction.CUBIC_IN_OUT
+            });
+          } else {
+            alert('Not Found');
+          }
+        }
+      );
     }
 
     //視点変更

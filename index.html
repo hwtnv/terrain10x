@@ -170,16 +170,18 @@
         geocoder: false,
         creditContainer: creditContainerDiv,
         //地形強調のデフォルト値
-        terrainExaggeration: 10.0
+        terrainExaggeration: 10.0,
+        //必要時以外はレンダリングを更新しない
+        requestRenderMode: true,
+				maximumRenderTimeChange: Infinity
       });
       //デフォルトベースマップを黒に
       viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString('#000000');
       ellipsoidProvider = new Cesium.EllipsoidTerrainProvider();
-      cesiumTerrainProviderMeshes = new Cesium.CesiumTerrainProvider({
-        url: '//assets.agi.com/stk-terrain/world',
-        requestWaterMask: true,
-        requestVertexNormals: true
-      });
+      cesiumTerrainProviderMeshes = new Cesium.createWorldTerrain({
+			  requestWaterMask: true,
+			  requestVertexNormals: true
+		  });
       viewer.terrainProvider = cesiumTerrainProviderMeshes;
 
       //初期視点に移動

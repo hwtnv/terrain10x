@@ -272,34 +272,33 @@ map of the world.\nhttp://www.openstreetmap.org',
 
     //ジオコード
 
-    function geocode() {
-      var geocoder = new google.maps.Geocoder();
-      var input = document.getElementById('inputtext').value;
-      geocoder.geocode({
-          address: input
-        },
+		function geocode() {
+			var geocoder = new google.maps.Geocoder();
+			var input = document.getElementById('inputtext').value;
+			geocoder.geocode(
+				{ address: input },
 
-        function (results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            var viewportObj = results[0].geometry.viewport;
-            var southNorth = viewportObj[Object.keys(viewportObj)[0]];
-            var westEast = viewportObj[Object.keys(viewportObj)[1]];
+				function (results, status) {
+					if (status == google.maps.GeocoderStatus.OK) {
+						var viewportObj = results[0].geometry.viewport;
+						var southNorth = viewportObj[Object.keys(viewportObj)[0]];
+						var westEast = viewportObj[Object.keys(viewportObj)[1]];
 
-            var south = southNorth[Object.keys(southNorth)[0]];
-            var north = southNorth[Object.keys(southNorth)[1]];
-            var west = westEast[Object.keys(westEast)[0]];
-            var east = westEast[Object.keys(westEast)[1]];
-            var rectangle = Cesium.Rectangle.fromDegrees(west, south, east, north);
-            viewer.camera.flyTo({
-              destination: rectangle,
-              easingFunction: Cesium.EasingFunction.CUBIC_IN_OUT
-            });
-          } else {
-            alert('Not Found');
-          }
-        }
-      );
-    }
+						var south = southNorth[Object.keys(southNorth)[0]];
+						var north = southNorth[Object.keys(southNorth)[1]];
+						var west = westEast[Object.keys(westEast)[0]];
+						var east = westEast[Object.keys(westEast)[1]];
+						var rectangle = Cesium.Rectangle.fromDegrees(west, south, east, north);
+						viewer.camera.flyTo({
+							destination: rectangle,
+							easingFunction: Cesium.EasingFunction.CUBIC_IN_OUT
+						});
+					} else {
+						alert('Not Found');
+					}
+				}
+			);
+		}
 
     //視点変更
 

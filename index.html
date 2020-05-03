@@ -188,7 +188,7 @@
       ellipsoidProvider = new Cesium.EllipsoidTerrainProvider();
       cesiumTerrainProviderMeshes = new Cesium.createWorldTerrain({
         requestWaterMask: false,
-        requestVertexNormals: false
+        requestVertexNormals: true
       });
       viewer.terrainProvider = cesiumTerrainProviderMeshes;
       //ライティングをOFFに

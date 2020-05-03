@@ -5,14 +5,14 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="shrink-to-fit=no, width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-  <meta name="description" content="Cesiumを使った地形強調のサンプルプログラム" />
+  <meta name="description" content="地形の強調度を変更できるバーチャルアースです" />
   <meta property="og:image" content="https://hwtnv.github.io/terrain10x/screen.jpg" />
-  <meta property="og:description" content="Cesiumを使った地形強調のサンプルプログラム" />
+  <meta property="og:description" content="地形の強調度を変更できるバーチャルアースです" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@hwtnv" />
   <meta name="twitter:creator" content="@hwtnv" />
-  <meta name="twitter:title" content="Cesium地形強調サンプル" />
-  <meta name="twitter:description" content="Cesiumを使った地形強調のサンプルプログラム" />
+  <meta name="twitter:title" content="地形強調立体地図" />
+  <meta name="twitter:description" content="地形の強調度を変更できるバーチャルアースです" />
   <meta name="twitter:image" content="https://hwtnv.github.io/terrain10x/screen.jpg" />
   <title>Cesium地形強調サンプル｜An interactive terrain exaggeration example</title>
   <script src="Cesium/Cesium.js"></script>
@@ -158,6 +158,8 @@
     var cesiumTerrainProviderMeshes;
 
     function loadCesium() {
+
+      Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5MTE5MTY3Zi00ZDYwLTQ5OTktYWQzNS03NGU3ZTlhMjY4ODYiLCJpZCI6MjgyLCJzY29wZXMiOlsiYXNsIiwiYXNyIiwiYXN3IiwiZ2MiXSwiaWF0IjoxNTU2ODU1NTYyfQ.AN1hbaCe4FpVYR3YPYMcukXtemj_wKragdlH6b1MifA';
 
       viewer = new Cesium.Viewer('cesiumContainer', {
         //起動時はImageryProviderナシ

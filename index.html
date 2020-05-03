@@ -4,7 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="shrink-to-fit=no, width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <meta name="viewport"
+    content="shrink-to-fit=no, width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <meta name="description" content="地形の強調度を変更できるバーチャルアースです" />
   <meta property="og:image" content="https://hwtnv.github.io/terrain10x/screen.jpg" />
   <meta property="og:description" content="地形の強調度を変更できるバーチャルアースです" />
@@ -18,9 +19,11 @@
   <script src="Cesium/Cesium.js"></script>
   <script src="js/jquery-2.1.3.min.js"></script>
   <script src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCc9E-ulJKRVMPyJe_V5sUVNU8kxiDIUtg"></script>
+  <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCc9E-ulJKRVMPyJe_V5sUVNU8kxiDIUtg">
+  </script>
   <style>
     @import url(Cesium/Widgets/widgets.css);
+
     html,
     body,
     #cesiumContainer {
@@ -96,7 +99,8 @@
   </div>
   <div id="slideBar">
     <div id="button" onclick="changeExaggeration()">SET</div>
-    <input type="range" name="exaggeration" id="changeExaggeration" value="10" min="-10" max="10" step="1" oninput="textChange()">
+    <input type="range" name="exaggeration" id="changeExaggeration" value="10" min="-10" max="10" step="1"
+      oninput="textChange()">
     <div id="magnification">x10</div>
   </div>
   <div id="cesiumContainer"></div>
@@ -159,7 +163,8 @@
 
     function loadCesium() {
 
-      Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5MTE5MTY3Zi00ZDYwLTQ5OTktYWQzNS03NGU3ZTlhMjY4ODYiLCJpZCI6MjgyLCJzY29wZXMiOlsiYXNsIiwiYXNyIiwiYXN3IiwiZ2MiXSwiaWF0IjoxNTU2ODU1NTYyfQ.AN1hbaCe4FpVYR3YPYMcukXtemj_wKragdlH6b1MifA';
+      Cesium.Ion.defaultAccessToken =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5MTE5MTY3Zi00ZDYwLTQ5OTktYWQzNS03NGU3ZTlhMjY4ODYiLCJpZCI6MjgyLCJzY29wZXMiOlsiYXNsIiwiYXNyIiwiYXN3IiwiZ2MiXSwiaWF0IjoxNTU2ODU1NTYyfQ.AN1hbaCe4FpVYR3YPYMcukXtemj_wKragdlH6b1MifA';
 
       viewer = new Cesium.Viewer('cesiumContainer', {
         //起動時はImageryProviderナシ
@@ -175,15 +180,15 @@
         terrainExaggeration: 10.0,
         //必要時以外はレンダリングを更新しない
         requestRenderMode: true,
-				maximumRenderTimeChange: Infinity
+        maximumRenderTimeChange: Infinity
       });
       //デフォルトベースマップを黒に
       viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString('#000000');
       ellipsoidProvider = new Cesium.EllipsoidTerrainProvider();
       cesiumTerrainProviderMeshes = new Cesium.createWorldTerrain({
-			  requestWaterMask: true,
-			  requestVertexNormals: true
-		  });
+        requestWaterMask: true,
+        requestVertexNormals: true
+      });
       viewer.terrainProvider = cesiumTerrainProviderMeshes;
 
       //初期視点に移動
@@ -270,8 +275,9 @@ map of the world.\nhttp://www.openstreetmap.org',
     function geocode() {
       var geocoder = new google.maps.Geocoder();
       var input = document.getElementById('inputtext').value;
-      geocoder.geocode(
-        { address: input },
+      geocoder.geocode({
+          address: input
+        },
 
         function (results, status) {
           if (status == google.maps.GeocoderStatus.OK) {

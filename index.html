@@ -208,7 +208,7 @@
 
       //ESRI World Imagery
       imageryViewModels.push(new Cesium.ProviderViewModel({
-        name: 'ESRI\u00adWorld\u00adImagery',
+        name: 'ESRI World Imagery',
         iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/esriWorldImagery.png'),
         tooltip: 'World Imagery provides one meter or better satellite and aerial imagery in many parts of the world and lower resolution satellite imagery worldwide.  The map includes NASA Blue Marble: Next Generation 500m resolution imagery at small scales (above 1:1,000,000), i-cubed 15m eSAT imagery at medium-to-large scales (down to 1:70,000) for the world, and USGS 15m Landsat imagery for Antarctica. The map features 0.3m resolution imagery in the continental United States and 0.6m resolution imagery in parts of Western Europe from DigitalGlobe. In other parts of the world, 1 meter resolution imagery is available from GeoEye IKONOS, i-cubed Nationwide Prime, Getmapping, AeroGRID, IGN Spain, and IGP Portugal.  Additionally, imagery at different resolutions has been contributed by the GIS User Community.\http://www.esri.com',
         creationFunction: function () {
@@ -232,9 +232,24 @@ in this global view of the Earth at night as seen by NASA/NOAA\'s Suomi NPP sate
           });
         }
       }));
+      ///Users/hwtnv/Repositories/terrain10x_2/Cesium/Widgets/Images/ImageryProviders/esriNationalGeographic.png
+      //esriNationalGeographic
+      imageryViewModels.push(new Cesium.ProviderViewModel({
+        name: 'ESRI National Geographic',
+        iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/esriNationalGeographic.png'),
+        tooltip: 'The National Geographic basemap is designed to be used as a general reference map for informational and educational purposes.',
+        creationFunction: function () {
+          return new Cesium.ArcGisMapServerImageryProvider({
+            url: '//server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer',
+            enablePickFeatures: false
+          });
+        }
+      }));
+
+
       //Open Street Map
       imageryViewModels.push(new Cesium.ProviderViewModel({
-        name: 'Open\u00adStreet\u00adMap',
+        name: 'Open Street Map',
         iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/openStreetMap.png'),
         tooltip: 'OpenStreetMap (OSM) is a collaborative project to create a free editable \
 map of the world.\nhttp://www.openstreetmap.org',

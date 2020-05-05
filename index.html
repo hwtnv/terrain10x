@@ -256,6 +256,20 @@ map of the world.\nhttp://www.openstreetmap.org',
           });
         }
       }));
+
+      //地理院タイル
+      imageryViewModels.push(new Cesium.ProviderViewModel({
+        name: '国土地理院 標高地図',
+        iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/japanRelief.png'),
+        tooltip: '海域部は海上保安庁海洋情報部の資料を使用して作成',
+        creationFunction: function () {
+          return Cesium.createOpenStreetMapImageryProvider({
+            url: 'https://cyberjapandata.gsi.go.jp/xyz/relief/',
+            credit: '国土地理院'
+          });
+        }
+      }));
+
       //baseLayerPickerボタンを追加
       var layers = viewer.imageryLayers;
       var baseLayerPicker = new Cesium.BaseLayerPicker('baseLayerPickerContainer', {
